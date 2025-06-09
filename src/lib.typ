@@ -77,7 +77,7 @@
     stroke: (x, y) => if (y == 1){
     (top: 1pt + gay)
   }else if(y > 1){
-    (top: 0.7pt + gay)
+    (top: 0.5pt + gay)
   },
     align: (x, y) => (
     if x > 0 { center }
@@ -88,7 +88,7 @@
   set raw(theme: "theme.tmTheme")
   show raw: it => block(
     fill: background-light,
-    inset: 10pt,
+    inset: 5pt,
     radius: 5pt,
     text(fill: text-color, it)
   )
