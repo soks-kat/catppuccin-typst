@@ -1,8 +1,6 @@
-A catppuccin mocha typst template.
-
 # Installation
-Go to ```~/.cache/typst/```
-Create the folders ```templates/catppuccin/0.0.1/```
+Go to ```~/.cache/typst/``` and create the folders ```templates/catppuccin/0.0.1/```
+
 There you shall clone this repository.
 
 # Usage
