@@ -1,30 +1,4 @@
-#let background = rgb("#1e1e2e");
-#let background-light = rgb("#2d2c3e");
-#let background-dark = rgb("#181826");
-
-#let text-color = rgb("#cdd6f4");
-#let text-dark = rgb("#181825");
-
-#let primary = rgb("#cba6f7");
-#let primary-b = rgb("#a177d1");
-#let secondary = rgb("#89b4fa");
-#let secondary-b = rgb("#5d8cda");
-#let tertiary = rgb("#fab387");
-#let four = rgb("#f38ba8");
-
-#let red = rgb("#f38ba8");
-#let red-b = rgb("#dd6887");
-#let orange = rgb("#fab387");
-#let orange-b = rgb("#f58e6a");
-#let yellow = rgb("#f9e2af");
-#let yellow-b = rgb("#fbd98d");
-#let green = rgb("#a6e3a1");
-#let green-b = rgb("#83d37d");
-#let blue = rgb("#89b4fa");
-#let blue-b = rgb("#6c99e2");
-#let purple = rgb("#cba6f7");
-#let purple-b = rgb("#a177d1");
-#let desaturated = rgb("#857da8");
+#import "./colours.typ": *
 
 #let gay = gradient.linear(red, orange, yellow, green, blue, purple)
 #let rainbow(content) = {
@@ -77,7 +51,10 @@
     for (idx, child) in it.children.enumerate() {
       block(pad(left: it.indent)[
         #stack(dir: ltr, spacing: it.body-indent)[
-          #let r = (idx/(n-children - 1))
+          #let r = 0
+          #if n-children >= 1 {
+            r = (idx/(n-children - 1))
+          }
           #set text(gay.sample(r*100%))
           •
         ][
@@ -121,9 +98,9 @@
   }
 
   set raw(theme: "theme.tmTheme")
-  show raw: it => block(
+  show raw.where(block: true): it => block(
     fill: background-light,
-    inset: 5pt,
+    inset: 1em,
     radius: 5pt,
     text(fill: text-color, it)
   )
@@ -186,7 +163,7 @@ context{
     header-color = color;
   }
   block(
-    fill: color.transparentize(84%),
+    fill: color.transparentize(80%),
     radius: 6pt,
     inset: (
       top: 10pt,
@@ -227,6 +204,13 @@ context{
 #let theorem(body, ..args) = clue(
   "Teorema",
   primary,
+  body,
+  ..args
+);
+
+#let def(body, ..args) = clue(
+  "Definició",
+  secondary,
   body,
   ..args
 );
