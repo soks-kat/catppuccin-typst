@@ -1,16 +1,15 @@
 [package]
-name = "gay"
+name = "catppuccin"
 version = "0.0.1"
 compiler = "0.13.0"
-repository = "https://github.com/cetz-package/cetz"
-homepage = "https://cetz-package.github.io/"
+repository = "https://github.com/soks-kat/catppuccin-typst"
+# homepage = "https://cetz-package.github.io/"
 entrypoint = "src/lib.typ"
 authors = [
-  "Johannes Wolf <https://github.com/johannes-wolf>",
-  "fenjalien <https://github.com/fenjalien>"
+  "Soks Kat <https://github.com/soks-kat>",
 ]
-categories = [ "visualization" ]
+categories = [ "theming" ]
 license = "LGPL-3.0-or-later"
-description = "Drawing with Typst made easy, providing an API inspired by TikZ and Processing. Includes modules for plotting, charts and tree layout."
-keywords = [ "draw", "canvas", "tree" ]
-exclude = [ "/gallery/*", "manual.pdf", "manual.typ" ]
+description = "A colourfull theming system for typst."
+keywords = [ "theming", "catppuccin", "kanagawa" ]
+# exclude = [ "/gallery/*", "manual.pdf", "manual.typ" ]

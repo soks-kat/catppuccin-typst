@@ -1,28 +1,131 @@
-#let background = rgb("#1e1e2e");
-#let background-light = rgb("#2d2c3e");
-#let background-dark = rgb("#181826");
+#let catppuccin = (
+  name: "catppuccin",
+  background: rgb("#1e1e2e"),
+  background-light: rgb("#2d2c3e"),
+  background-dark: rgb("#181826"),
 
-#let text-color = rgb("#cdd6f4");
-#let text-dark = rgb("#181825");
+  text-color: rgb("#cdd6f4"),
+  text-dark: rgb("#181825"),
 
-#let primary = rgb("#cba6f7");
-#let primary-b = rgb("#a177d1");
-#let secondary = rgb("#fab387");
-#let secondary-b = rgb("#f58e6a");
-#let tertiary = rgb("#89b4fa");
-#let four = rgb("#f38ba8");
+  primary: rgb("#cba6f7"),
+  primary-b: rgb("#a177d1"),
+  secondary: rgb("#89b4fa"),
+  secondary-b: rgb("#5d8cda"),
+  tertiary: rgb("#fab387"),
+  four: rgb("#f38ba8"),
 
-#let red = rgb("#f38ba8");
-#let red-b = rgb("#dd6887");
-#let orange = rgb("#fab387");
-#let orange-b = rgb("#f58e6a");
-#let yellow = rgb("#f9e2af");
-#let yellow-b = rgb("#fbd98d");
-#let green = rgb("#a6e3a1");
-#let green-b = rgb("#83d37d");
-#let blue = rgb("#89b4fa");
-#let blue-b = rgb("#6c99e2");
-#let purple = rgb("#cba6f7");
-#let purple-b = rgb("#a177d1");
-#let desaturated = rgb("#857da8");
+  red: rgb("#f38ba8"),
+  red-b: rgb("#dd6887"),
+  orange: rgb("#fab387"),
+  orange-b: rgb("#f58e6a"),
+  yellow: rgb("#f9e2af"),
+  yellow-b: rgb("#fbd98d"),
+  green: rgb("#a6e3a1"),
+  green-b: rgb("#83d37d"),
+  blue: rgb("#89b4fa"),
+  blue-b: rgb("#6c99e2"),
+  purple: rgb("#cba6f7"),
+  purple-b: rgb("#a177d1"),
+  desaturated: rgb("#857da8"),
+)
 
+#let kanagawa = (
+  name: "kanagawa",
+  background: rgb("1f1f28"),
+  background-light:rgb("2a2a37"),
+  background-lighter:rgb("39394c"),
+  background-dark: rgb("1f1f28"),
+
+  text-color: rgb("DCD7BA"),
+  text-dark: rgb("1f1f28"),
+  desaturated: rgb("727169"),
+
+  primary: rgb("6A946A"),
+  primary-b: rgb("5f7f5f"),
+  secondary: rgb("c0a36e"),
+  secondary-b: rgb("a28757"),
+  tertiary: rgb("7e9cd8"),
+  four: rgb("957FB8"),
+
+  red: rgb("c34043"),
+  red-b: rgb("ae4143"),
+  orange: rgb("d18658"),
+  orange-b: rgb("b47148"),
+  yellow: rgb("c0a36e"),
+  yellow-b: rgb("ac8e5a"),
+  green: rgb("76946A"),
+  green-b: rgb("5f7f5f"),
+  blue: rgb("7E9CD8"),
+  blue-b: rgb("6980ae"),
+  purple: rgb("957FB8"),
+  purple-b: rgb("675681"),
+
+  link: rgb("7E9CD8"),
+  link-b: rgb("6980ae"),
+)
+
+#let trans = (
+  name: "trans",
+  background: rgb("1e1e2e"),
+  background-light: rgb("2d2c3e"),
+  background-lighter: rgb("45475a"),
+  background-dark: rgb("181825"),
+
+  text-color: rgb("cdd6f4"),
+  text-dark: rgb("181825"),
+  desaturated: rgb("a87da7"),
+
+  primary: rgb("f5bde6"),
+  primary-b: rgb("f38ba8"),
+  secondary: rgb("99c0ff"),
+  secondary-b: rgb("6c99e2"),
+  tertiary: rgb("99c0ff"),
+  four: rgb("f5bde6"),
+
+  red: rgb("99c0ff"),
+  red-b: rgb("6c99e2"),
+  orange: rgb("f38ba8"),
+  orange-b: rgb("dd6887"),
+  yellow: rgb("f6f1ff"),
+  yellow-b: rgb("c7b8e0"),
+  green: rgb("f6f1ff"),
+  green-b: rgb("c7b8e0"),
+  blue: rgb("f38ba8"),
+  blue-b: rgb("dd6887"),
+  purple: rgb("99c0ff"),
+  purple-b: rgb("6c99e2"),
+
+  link: rgb("89b4fa"),
+  link-b: rgb("6c99e2"),
+)
+
+#let boring = (
+  name: "boring",
+  background: rgb("#FFF"),
+  background-light: rgb("#F2F2F2"),
+  background-dark: rgb("#181826"),
+
+  text-color: rgb("#000"),
+  text-dark: rgb("#181825"),
+
+  primary: rgb("#525252"),
+  primary-b: rgb("#a177d1"),
+  secondary: rgb("#525252"),
+  secondary-b: rgb("#5d8cda"),
+  tertiary: rgb("#fab387"),
+  four: rgb("#f38ba8"),
+
+  red: rgb("#525252"),
+  red-b: rgb("#dd6887"),
+  orange: rgb("#525252"),
+  orange-b: rgb("#f58e6a"),
+  yellow: rgb("#525252"),
+  yellow-b: rgb("#fbd98d"),
+  green: rgb("#525252"),
+  green-b: rgb("#83d37d"),
+  blue: rgb("#525252"),
+  blue-b: rgb("#6c99e2"),
+  purple: rgb("#525252"),
+  purple-b: rgb("#a177d1"),
+  desaturated: rgb("#969696"),
+)

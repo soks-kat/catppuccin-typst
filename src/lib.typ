@@ -1,17 +1,28 @@
 #import "./colours.typ": *
 
-#let gay = gradient.linear(red, orange, yellow, green, blue, purple)
-#let rainbow(content) = {
-  set text(fill: gay)
-  box(content)
-}
+#let theme = state("colours", catppuccin)
 
 #let conf(
+  colours: catppuccin,
+  one_page: true,
   doc,
 ) = {
-  set page(height: auto) // This is to only have one page
+  theme.update(colours)
+  let gay = gradient.linear(colours.red, colours.orange, colours.yellow, colours.green, colours.blue, colours.purple)
+  let rainbow(content) = {
+    set text(fill: gay)
+    box(content)
+  }
 
-  set page(fill: background)
+  let page_height = 841.89pt
+  let page_numbering = "1 / 1"
+  if one_page {
+    page_height = auto
+    page_numbering = none
+  } // This is to only have one page
+  set page(height: page_height, numbering: page_numbering)
+
+  set page(fill: colours.background)
 
   set text(
     font: "JetBrainsMono NF",
@@ -21,7 +32,7 @@
 
   show math.equation: set text(size: 11pt)
 
-  set text(fill: text-color)
+  set text(fill: colours.text-color)
 
   set par(
     justify: true,
@@ -52,7 +63,7 @@
       block(pad(left: it.indent)[
         #stack(dir: ltr, spacing: it.body-indent)[
           #let r = 0
-          #if n-children >= 1 {
+          #if n-children > 1 {
             r = (idx/(n-children - 1))
           }
           #set text(gay.sample(r*100%))
@@ -97,12 +108,12 @@
     }  
   }
 
-  set raw(theme: "theme.tmTheme")
+  set raw(theme: colours.name + ".tmTheme")
   show raw.where(block: true): it => block(
-    fill: background-light,
+    fill: colours.background-light,
     inset: 1em,
     radius: 5pt,
-    text(fill: text-color, it)
+    text(fill: colours.text-color, it)
   )
   show strong: it => {
     text(
@@ -120,36 +131,75 @@
 //   it.indented(it.prefix(), it.body() + it.fill),
 // )
 
+  // show outline: set heading(outlined: true)
   let outline_counter = counter("outlines")
 
-  set outline.entry(fill: repeat(text(size: 1.5pt, weight: "bold")[gay], gap: 0.5em))
-  show outline.entry: it => {
-  outline_counter.step()
-context{
-    it.indented(
-      it.prefix(),
-      link(
-        it.element.location(),
-        text(
-          fill: text-color,
-          it.body()
-          +h(4pt)
-          +box(width: 1fr, it.fill)
-          +h(4pt)
-        )
-        // + [#outline_counter.get().at(0) / #outline_counter.final().at(0)]
-        + text(fill: gay.sample(outline_counter.get().at(0) / outline_counter.final().at(0)*100%),sym.star.filled)
-      )
-    ) 
-}
+  let fill = repeat(".", gap: 0.15em)
+  if colours.name != "boring" {
+    fill = repeat(text(size: 1.5pt, weight: "bold")[gay], gap: 0.5em)
   }
+  set outline.entry(fill: fill)
+
+  let header_level = state("level", 0)
+  show outline.entry: it => {
+    outline_counter.step()
+    context{
+        let level = 0
+        let prepad = ""
+        // let level = 0
+        if(it.element.func() == heading) {
+          header_level.update(it.element.level)
+          level = header_level
+        } else {
+          prepad = header_level.get() * "  "
+        }
+        it.indented(
+          it.prefix(),
+          link(
+            it.element.location(),
+            text(
+              fill: colours.text-color,
+              prepad 
+              +it.body()
+              +h(4pt)
+              +box(width: 1fr, it.fill)
+              +h(4pt)
+            )
+            // + [#outline_counter.get().at(0) / #outline_counter.final().at(0)]
+            + if one_page {
+              text(fill: gay.sample(outline_counter.get().at(0) / outline_counter.final().at(0)*100%),sym.star.filled)
+            } else {
+              text(fill: gay.sample(outline_counter.get().at(0) / outline_counter.final().at(0)*100%), str(it.element.location().page()))
+            }
+          )
+        ) 
+    }
+  }
+  show outline.entry: set block(above: 0.8em) 
   show outline.entry.where(
     level: 1
-  ): set block(above: 1.2em)
+  ): it => {
+    if it.element.func() == heading {
+      set block(above: 1.3em) 
+      it
+    } else {
+      it
+    }
+  }
 
   doc
 }
 
+#let rainbow(content) = context{
+  let colours = theme.get()
+  let gay = gradient.linear(colours.red, colours.orange, colours.yellow, colours.green, colours.blue, colours.purple)
+  set text(fill: gay)
+  box(content)
+}
+
+#let prev_idx = state("idx", 0)
+#let prev_colour = state("colour", rgb("#000"))
+// #let  = state("self", 0)
 #let clue(
   type,
   color,
@@ -190,33 +240,79 @@ context{
         ]
       ]
     ]
-
-    #body
+    #context{
+      prev_idx.update(old => old + 1)
+      prev_colour.update(color)
+      if type != "Exemple" {
+        hide(box(height: 0pt, figure(
+              none,
+              kind: "theorem",
+              supplement: type,
+              caption: prev_idx.get()*"  " + type.slice(0, 1) + ": " + title,
+              numbering: none,
+              outlined: true,
+          )))
+      }
+      "\n" + body
+      prev_idx.update(old => old -1)
+    }
   ]
 }
 
-#let example(body, ..args) = clue(
-  "Exemple",
-  desaturated,
-  body,
-  ..args
-);
-#let theorem(body, ..args) = clue(
-  "Teorema",
-  primary,
-  body,
-  ..args
-);
+#let example(body, ..args) = context{
+  let colours = theme.get()
+  clue(
+    "Exemple",
+    colours.desaturated,
+    body,
+    ..args
+  )
+};
+#let theorem(body, ..args) = context{
+  let colours = theme.get()
+  clue(
+    "Teorema",
+    colours.primary,
+    body,
+    ..args
+  )
+};
 
-#let def(body, ..args) = clue(
-  "Definició",
-  secondary,
-  body,
-  ..args
-);
+#let def(body, ..args) = context{
+  let colours = theme.get()
+  clue(
+    "Definició",
+    colours.secondary,
+    body,
+    ..args
+  )
+};
+
+#let tip(body, ..args, title: []) = {
+  context {
+    let colours = theme.get()
+    let colour = colours.primary
+    if prev_idx.get() != 0 {colour = prev_colour.get()}
+    block(
+      // fill: color.transparentize(80%),
+      stroke: colour,
+      radius: 6pt,
+      inset: (
+        top: 10pt,
+        left: 15pt,
+        right: 15pt,
+        bottom: 10pt
+      ),
+      width: 100%,
+      ..args,
+    )[
+      #body
+    ]
+  }
+}
 
 
-#let faint(body) = text(fill: desaturated)[$#body$]
+#let faint(body) = context {text(fill: theme.get().desaturated)[$#body$]}
 
 #let exercise_numbering(..nums) = {
   let midmarker = "."
