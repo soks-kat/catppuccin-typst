@@ -1,6 +1,11 @@
 #import "./colours.typ": *
 
 #let theme = state("colours", catppuccin)
+#let theorem_selector = figure.where(kind: "theorem")
+
+// #let vline = context {
+//
+// }
 
 #let conf(
   colours: catppuccin,
@@ -9,18 +14,14 @@
 ) = {
   theme.update(colours)
   let gay = gradient.linear(colours.red, colours.orange, colours.yellow, colours.green, colours.blue, colours.purple)
+  let gay_rel = gradient.linear(relative: "parent", colours.red, colours.orange, colours.yellow, colours.green, colours.blue, colours.purple)
   let rainbow(content) = {
     set text(fill: gay)
     box(content)
   }
 
-  let page_height = 841.89pt
-  let page_numbering = "1 / 1"
-  if one_page {
-    page_height = auto
-    page_numbering = none
-  } // This is to only have one page
-  set page(height: page_height, numbering: page_numbering)
+  set page(height: auto) if one_page
+  set page(numbering: "1 / 1") if not one_page
 
   set page(fill: colours.background)
 
@@ -42,36 +43,38 @@
     it
     v(-1em)
     move(line(length: 100% + 3pt, stroke: 2pt + gay), dx: -3pt)
-    // counter(heading).step()
   }
   show heading.where(level: 2): it => {
-    underline(it, stroke: 1.5pt + gay, extent: 1pt, offset: 2.5pt, evade: false)
+    it
+    v(-1em)
+    move(line(length: measure(it).width, stroke: 1.5pt + gay))
   }
   show heading.where(level: 3): it => {
-    underline(it, stroke: 1pt + gay, extent: 0pt, offset: 2.5pt, evade: false)
+    it
+    v(-1em)
+    move(line(length: measure(it).width, stroke: 1pt + gay))
   }
 
-  // let list_counter = counter("bullets")
   show list: it => {
     let n-children = it.children.len()
     let block = block
     if it.tight {
-    block = block.with(spacing: 0.65em)
-  }
+      block = block.with(spacing: 0.65em)
+    }
 
     for (idx, child) in it.children.enumerate() {
-      block(pad(left: it.indent)[
-        #stack(dir: ltr, spacing: it.body-indent)[
-          #let r = 0
-          #if n-children > 1 {
-            r = (idx/(n-children - 1))
-          }
-          #set text(gay.sample(r*100%))
-          •
-        ][
-          #child.body
-        ]
-      ])
+      block(pad(left: it.indent,
+        stack(dir: ltr, spacing: it.body-indent,
+          {
+            let r = 0
+            if n-children > 1 {
+              r = (idx/(n-children - 1))
+            }
+            text(gay.sample(r*100%))[•]
+          },
+          child.body
+        )
+      ))
     }
   }
   // set highlight(
@@ -86,26 +89,27 @@
   show link: it => rainbow(it)
 
   show table.cell.where(y: 0): strong
-  set table(
-    stroke: (x, y) => if (y == 1){
-    (top: 1pt + gay)
-  }else if(y > 1){
-    (top: 0.5pt + gay)
 
-  },
-    align: (x, y) => (
-    if x > 0 { center }
-    else { left }
+  show table: set table.vline(
+      stroke: gay_rel
   )
+  set table(
+    stroke: (x, y) => if (y == 1) {
+      (top: 1pt + gay)
+    } else if(y > 1) {
+      (top: 0.5pt + gay)
+    },
+    align: (x, y) => if x > 0 { center } else { left }
   )
+
   set math.equation(numbering: "(1)", supplement: [Eq.])
-  show math.equation: it => {
+  show math.equation.where(block: true): it => {
     if it.block and not it.has("label") [
       #counter(math.equation).update(v => v - 1)
       #math.equation(it.body, block: true, numbering: none)#label(" ")
     ] else {
       it
-    }  
+    }
   }
 
   set raw(theme: colours.name + ".tmTheme")
@@ -134,53 +138,50 @@
   // show outline: set heading(outlined: true)
   let outline_counter = counter("outlines")
 
-  let fill = repeat(".", gap: 0.15em)
-  if colours.name != "boring" {
-    fill = repeat(text(size: 1.5pt, weight: "bold")[gay], gap: 0.5em)
-  }
-  set outline.entry(fill: fill)
+  set outline.entry(
+    fill: repeat(
+      text(size: 1.5pt, weight: "bold")[gay],
+      gap: 0.5em
+    )
+  ) if colours.name != "boring"
 
-  let header_level = state("level", 0)
+  set outline(indent: 1.2em)
   show outline.entry: it => {
     outline_counter.step()
-    context{
-        let level = 0
-        let prepad = ""
-        // let level = 0
-        if(it.element.func() == heading) {
-          header_level.update(it.element.level)
-          level = header_level
-        } else {
-          prepad = header_level.get() * "  "
-        }
-        it.indented(
-          it.prefix(),
-          link(
-            it.element.location(),
-            text(
-              fill: colours.text-color,
-              prepad 
-              +it.body()
-              +h(4pt)
-              +box(width: 1fr, it.fill)
-              +h(4pt)
-            )
-            // + [#outline_counter.get().at(0) / #outline_counter.final().at(0)]
-            + if one_page {
-              text(fill: gay.sample(outline_counter.get().at(0) / outline_counter.final().at(0)*100%),sym.star.filled)
-            } else {
-              text(fill: gay.sample(outline_counter.get().at(0) / outline_counter.final().at(0)*100%), str(it.element.location().page()))
-            }
+    let curr_index = state("idx").at(it.element.location())
+    let indent = if outline.indent == auto {
+      1.2em
+    } else {
+      outline.indent
+    } * curr_index
+
+    it.indented(
+      it.prefix(),
+      link(
+        it.element.location(),
+        text(
+          fill: colours.text-color,
+          h(indent) + it.body()
+          + h(4pt) + box(width: 1fr, it.fill) + h(4pt)
+        )
+        + context if one_page {
+          text(
+            fill: gay.sample(outline_counter.get().at(0) / outline_counter.final().at(0)*100%),
+            sym.star.filled
           )
-        ) 
-    }
+        } else {
+          text(
+            fill: gay.sample(outline_counter.get().at(0) / outline_counter.final().at(0)*100%),
+            str(it.element.location().page())
+          )
+        }
+      )
+    )
   }
-  show outline.entry: set block(above: 0.8em) 
-  show outline.entry.where(
-    level: 1
-  ): it => {
+  show outline.entry: set block(above: 0.8em)
+  show outline.entry.where(level: 1): it => {
     if it.element.func() == heading {
-      set block(above: 1.3em) 
+      set block(above: 1.3em)
       it
     } else {
       it
@@ -199,7 +200,6 @@
 
 #let prev_idx = state("idx", 0)
 #let prev_colour = state("colour", rgb("#000"))
-// #let  = state("self", 0)
 #let clue(
   type,
   color,
@@ -223,43 +223,43 @@
     ),
     width: 100%,
     ..args,
-  )[
-    #box()[
-      #set text(
-        fill: header-color,
-        weight: "bold",
-      );
-      #math.bold[
-        #icon
-        #if title == none [
-          #type
-        ] else if type.len() != 0 [
-          #type: #title
-        ] else [
-          #title
-        ]
-      ]
-    ]
-    #context{
+    {
+      box({
+        set text(
+          fill: header-color,
+          weight: "bold",
+        );
+        math.bold({
+          icon
+          if title == none [
+            #type
+          ] else if type.len() != 0 [
+            #type: #title
+          ] else [
+            #title
+          ]
+        })
+      })
       prev_idx.update(old => old + 1)
       prev_colour.update(color)
       if type != "Exemple" {
-        hide(box(height: 0pt, figure(
-              none,
-              kind: "theorem",
-              supplement: type,
-              caption: prev_idx.get()*"  " + type.slice(0, 1) + ": " + title,
-              numbering: none,
-              outlined: true,
-          )))
+        hide(box(
+          height: 0pt,
+          figure(
+            none,
+            kind: "theorem",
+            caption: [#type.slice(0, 1): #title],
+            numbering: none,
+          )
+        ))
       }
       "\n" + body
-      prev_idx.update(old => old -1)
+      prev_idx.update(old => old - 1)
     }
-  ]
+  )
 }
 
-#let example(body, ..args) = context{
+#let example(body, ..args) = context {
   let colours = theme.get()
   clue(
     "Exemple",
@@ -268,7 +268,7 @@
     ..args
   )
 };
-#let theorem(body, ..args) = context{
+#let theorem(body, ..args) = context {
   let colours = theme.get()
   clue(
     "Teorema",
@@ -278,7 +278,7 @@
   )
 };
 
-#let def(body, ..args) = context{
+#let def(body, ..args) = context {
   let colours = theme.get()
   clue(
     "Definició",
@@ -305,9 +305,8 @@
       ),
       width: 100%,
       ..args,
-    )[
-      #body
-    ]
+      body
+    )
   }
 }
 
