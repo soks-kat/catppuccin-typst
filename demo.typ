@@ -1,7 +1,7 @@
 #import "@typst_template/catppuccin:0.0.1": *
 #show: conf.with(colours: catppuccin, one_page: true)
 
-#outline(target: selector.or(heading, figure))
+#outline(target: selector.or(heading, theorem_selector), indent: 2em)
 
 The outiline can include theorems and definitions or not depending on your preference by including figures of type "theorem".
 

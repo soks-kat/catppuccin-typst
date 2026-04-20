@@ -148,7 +148,10 @@
   set outline(indent: 1.2em)
   show outline.entry: it => {
     outline_counter.step()
-    let curr_index = state("idx").at(it.element.location())
+    let curr_index = 0
+    if state("idx").at(it.element.location()) != none {
+      curr_index = state("idx").at(it.element.location())
+    }
     let indent = if outline.indent == auto {
       1.2em
     } else {
