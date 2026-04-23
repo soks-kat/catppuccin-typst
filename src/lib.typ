@@ -203,7 +203,7 @@
 }
 
 #let conf(
-  theme: auto,
+  theme: catppuccin,
   one_page: auto,
   gay_outline: auto,
   dark: true,
@@ -211,10 +211,6 @@
   doc,
 ) = {
   let colours = theme
-  if colours == auto {
-    colours = colourscheme.get()
-  }
-
   if one_page == auto {
     if colours.name != "boring" {
       one_page = true
@@ -278,12 +274,12 @@
   }
 
   show: dark_mode.with(dark: dark)
-  show: headers
-  show: lists
-  show: tables
+  show: headers.with(theme: colours)
+  show: lists.with(theme: colours)
+  show: tables.with(theme: colours)
   show: outlines.with(theme: colours, one_page: one_page, gay_fill: gay_outline)
 
-  show: code
+  show: code.with(theme: colours)
   show: maths
 
   doc

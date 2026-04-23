@@ -1,15 +1,16 @@
 #import "@typst_template/catppuccin:0.0.1": *
-#show: conf.with(theme: kanagawa)
+#show: conf
 
-// #set_theme(catppuccin)
-//
-// #show: outlines.with(theme: kanagawa)
+// #set_theme(kanagawa)
+// //
+// #show: outlines
 // #show: headers
 // #show: dark_mode
+// #show: code.with(boring)
 
-#outline(target: selector.or(heading, theorem_selector), indent: 2em)
+#outline(target: selector.or(heading, theorem_selector))
 
-The outiline can include theorems and definitions or not depending on your preference by including figures of type "theorem".
+The outiline can include theorems and definitions by including `theorem_selector`.
 
 = Usage
 You can show as many modules as you want out of.
@@ -31,7 +32,7 @@ Alternatively you can use one function that encompases all previous show rules
 
 ```typst
 #show conf.with(
-  theme: auto,
+  theme: catppuccin,
   one_page: auto, 
   gay_outline: auto, 
   monospace: auto,
@@ -54,13 +55,13 @@ The value of `auto` depends on which theme you have.
 }
 ```
 
-- Theme: the document theme can be specified either in the `conf` function or with the `set_theme` function. If no theme specified the document theme defaults to catppuccin. In each module, if the theme is `auto` then it gets the current document theme.
+- Theme: the document theme can be specified either in the `conf` function or with the `set_theme` function. If no theme specified, the document theme defaults to catppuccin. In each module, if the theme is `auto` then it gets the current document theme.
 
 - One_page: decides whether the document has one or multiple pages. If `false` there will be numbering on the pages and the page numbers will appear in the outline
 
 - Gay_outline: decides whether the dots in the outline are dots or small instances of the word gay.
 
-- monospace: decides whether the font is "JetBrainsMono NF" or the default typst foent.
+- monospace: decides whether the font is "JetBrainsMono NF" or the default typst font.
 
 - Dark: decides whether to make the document have a dark background and light text.
 
@@ -167,3 +168,32 @@ float sed(float a, float b){
   #tip()[tips adapt to the colour of the block they are in]
 ]
 
+= Images
+I have added icc colour profiles corresponding to some of the themes. By virtue of being based on a theme the colours of the image will naturally be reduced.
+
+*Usage:* `#image("<your_image>", icc: "icc/<theme>.icc")`
+
+Current themes available:
+#columns(2)[
+  *Catppuccin:*
+  #image("test.png")
+  *Kanagawa:*
+  #image("test.png")
+#colbreak()
+  \
+  #image("test.png", icc: "icc/catppuccin.icc")
+  #{
+  let colours = catppuccin
+  let gay = gradient.linear(colours.red, colours.orange, colours.yellow, colours.green, colours.blue, colours.purple)
+
+  show: line(length: 100% + 3pt, stroke: 1em + gay)
+  }
+  #v(0.7em)
+  #image("test.png", icc: "icc/kanagawa.icc")
+  #{
+  let colours = kanagawa
+  let gay = gradient.linear(colours.red, colours.orange, colours.yellow, colours.green, colours.blue, colours.purple)
+
+  show: line(length: 100% + 3pt, stroke: 1em + gay)
+  }
+]

@@ -10,4 +10,4 @@ At the start of any typst document where you want this template write the follow
 #show: conf
 ```
 
-If you want to make an individual word rainbow use ```#rainbow[your text]```
+For more information on usage check demo.pdf
