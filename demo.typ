@@ -172,6 +172,7 @@ float sed(float a, float b){
 I have added icc colour profiles corresponding to some of the themes. By virtue of being based on a theme the colours of the image will naturally be reduced.
 
 *Usage:* `#image("<your_image>", icc: "icc/<theme>.icc")`
+They are only visible if the document is compiled, it isn't visible in preview.
 
 Current themes available:
 #columns(2)[
