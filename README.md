@@ -15,8 +15,11 @@ For more information on usage check demo.pdf
 # Credits
 ## TmThemes
 **Catppuccin:** Modified version of [github.com/catppuccin/bat](https://github.com/catppuccin/bat/tree/main/themes)
+
 **Kanagawa:** [github.com/rebelot/kanagawa.nvim](https://github.com/rebelot/kanagawa.nvim/tree/master/extras/tmTheme)
+
 **Formal:** [Dawn theme by David Powers](https://github.com/JetBrains/colorSchemeTool/blob/master/tmThemes/Dawn.tmTheme)
+
 **Trans:** Modified version of Espresso
 
 ## ICC images
