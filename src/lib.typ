@@ -163,7 +163,7 @@
   if colours == auto {
     colours = colourscheme.get()
   }
-  set raw(theme: colours.name + ".tmTheme")
+  set raw(theme: "tmThemes/" + colours.name + ".tmTheme")
   show raw.where(block: true): it => block(
     fill: colours.background-light,
     inset: 1em,
