@@ -1,5 +1,5 @@
 #import "@typst_template/catppuccin:0.0.1": *
-#show: conf
+#show: conf.with(theme: catppuccin)
 
 // #set_theme(kanagawa)
 // //
@@ -55,17 +55,17 @@ The value of `auto` depends on which theme you have.
 }
 ```
 
-- Theme: the document theme can be specified either in the `conf` function or with the `set_theme` function. If no theme specified, the document theme defaults to catppuccin. In each module, if the theme is `auto` then it gets the current document theme.
+- #link(<theme>)[*Theme:*] the document theme can be specified either in the `conf` function or with the `set_theme` function. If no theme specified, the document theme defaults to catppuccin. In each module, if the theme is `auto` then it gets the current document theme.
 
-- One_page: decides whether the document has one or multiple pages. If `false` there will be numbering on the pages and the page numbers will appear in the outline
+- *One_page:* decides whether the document has one or multiple pages. If `false` there will be numbering on the pages and the page numbers will appear in the outline
 
-- Gay_outline: decides whether the dots in the outline are dots or small instances of the word gay.
+- *Gay_outline:* decides whether the dots in the outline are dots or small instances of the word gay.
 
-- monospace: decides whether the font is "JetBrainsMono NF" or the default typst font.
+- *Monospace:* decides whether the font is "JetBrainsMono NF" or the default typst font.
 
-- Dark: decides whether to make the document have a dark background and light text.
+- *Dark:* decides whether to make the document have a dark background and light text.
 
-== Theming
+== Theming <theme>
 You can decide the colourscheme of the document with `#show: conf.with(theme: <colourscheme>)` or `#set_theme(<colourscheme>)`. The default theme is Catppuccin.
 
 *Options:*
@@ -116,7 +116,8 @@ You can define your own colourscheme as a dictionary + a tmTheme under the same 
 === Rainbow
 You can highlight words with ```typst #rainbow[word]``` #rainbow[this is now rainbow]
 === Link
-#link("links.are.by.default@rainbow")
+#link("links.are.by.default@rainbow").
+Footnotes are also rainbow #footnote("As you can see here.")
 
 
 = Tables
@@ -167,6 +168,11 @@ float sed(float a, float b){
   this is the definition of a limit
   #tip()[tips adapt to the colour of the block they are in]
 ]
+Labeled equations are numbered.
+$ (a + b)^2 = a^2 + b^2 + 2a b $ <eq>
+
+Unlabeled equations aren't.
+$ (a + b)^2 = a^2 + b^2 + 2a b $
 
 = Images
 I have added icc colour profiles corresponding to some of the themes. By virtue of being based on a theme the colours of the image will naturally be reduced.
