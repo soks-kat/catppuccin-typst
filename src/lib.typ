@@ -180,6 +180,7 @@
     inset: 1em,
     radius: 5pt,
     text(fill: colours.text-color, it),
+    width: 100%,
   )
   doc
 }
