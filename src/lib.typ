@@ -445,3 +445,39 @@
   [#num-rep#marker]
 }
 
+#let formatting(names, ids) = {
+  let persons = ()
+  if ids.len() != 0 {
+    for (name, id) in names.zip(ids) {
+      persons.push([#name (#id)])
+    }
+  } else {
+    persons = names
+  }
+
+  persons = persons.map(p => text(style: "italic")[#p])
+
+  for (i, p) in persons.enumerate() {
+    if calc.rem(i, 2) == 0 {
+      p + [#h(1fr)]
+    } else {
+      p + "\n"
+    }
+  }
+}
+
+#let init(title, subtitle, names, ids: ()) = {
+  place(
+    top + center,
+    scope: "parent",
+    float: true,
+    [
+      #text(2em, weight: "bold")[#title]\
+      #subtitle
+
+      #v(0.2em)
+      #formatting(names, ids)
+      #v(0.5em)
+    ],
+  )
+}
